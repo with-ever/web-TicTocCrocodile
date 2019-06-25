@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.MemberInfoMapper">
+
+    <resultMap type="MemberInfo" id="memberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="tel"			column="TEL"/>
+        <result property="addr"			column="ADDR"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertMemberInfo" parameterType="MemberInfo">
+		INSERT INTO MemberInfo (
+			MEMBER_ID
+			,NAME
+			,GENDER
+			,TEL
+			,ADDR
+			,IMAGE_URL
+			,CREATE_TIME 
+			,UPDATE_TIME
+        	)
+        VALUES (
+	        #{memberId}
+	        ,#{name}
+	        ,#{gender}
+	        ,#{tel}
+	        ,#{addr}
+	        ,#{imageUrl}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectMemberInfo" parameterType="int" resultMap="memberInfoResultMap">
+		SELECT
+			MEMBER_ID
+			,NAME
+			,GENDER
+			,TEL
+			,ADDR
+			,IMAGE_URL
+			,CREATE_TIME 
+			,UPDATE_TIME
+		FROM MemberInfo
+		WHERE MEMBER_ID = #{memberId}
+    </select>
+    
+    <update id="updateMemberInfo" parameterType="MemberInfo">
+    	UPDATE MemberInfo
+   		SET
+   			NAME = #{name}
+			,GENDER = #{gender}
+			,TEL = #{tel}
+			,ADDR = #{addr}
+			<if test="imageUrl != null">
+			,IMAGE_URL = #{imageUrl}
+			</if>
+			,UPDATE_TIME = #{updateTime}
+ 		WHERE MEMBER_ID = #{memberId};
+    </update>
+    
+    <delete id="deleteMemberInfo" parameterType="int">
+    	DELETE
+		FROM MemberInfo
+		WHERE MEMBER_ID = #{memberId}
+    </delete>
+ 
+    
+</mapper>

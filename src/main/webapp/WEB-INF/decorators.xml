@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/resources/decorators">
+    <excludes>
+        <pattern>/index.do</pattern>
+        <pattern>/login</pattern>
+        <pattern>/admin/*</pattern>
+        <pattern>/member/signup</pattern>
+        <pattern>/information/*</pattern>
+        <pattern>/rules/*</pattern>
+        <pattern>/notice/*</pattern>
+    </excludes>   
+ 
+    <decorator name="layout" page="layout.jsp">
+       <pattern>/*</pattern> 
+    </decorator> 
+ 
+</decorators> 

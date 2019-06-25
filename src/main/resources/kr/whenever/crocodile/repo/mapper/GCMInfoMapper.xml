@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="kr.whenever.crocodile.repo.mapper.GCMInfoMapper">
+	<resultMap type="GCMInfo" id="gcmInfoResultMap">
+		<id property="idx" column="IDX" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="gcmId" column="GCM_ID" />
+		<result property="deviceId" column="DEVICE_ID" />
+	</resultMap>
+
+	<insert id="insertGCMInfo" parameterType="GCMInfo"
+		useGeneratedKeys="true" keyProperty="idx" keyColumn="IDX">
+		INSERT INTO
+		GCMInfo (
+		MEMBER_ID,
+		GCM_ID,
+		DEVICE_ID
+		)
+		VALUES (
+		#{memberId}
+		,#{gcmId}
+		,#{deviceId}
+		)
+	</insert>
+
+	<select id="selectGCMInfo" parameterType="int" resultMap="gcmInfoResultMap">
+		SELECT
+		IDX,
+		MEMBER_ID,
+		GCM_ID,
+		DEVICE_ID
+		FROM GCMInfo
+		WHERE IDX = #{idx}
+	</select>
+
+	<select id="selectGCMInfoByMemberId" parameterType="int"
+		resultMap="gcmInfoResultMap">
+		SELECT
+			IDX,
+			MEMBER_ID,
+			GCM_ID,
+			DEVICE_ID
+		FROM GCMInfo
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+
+	<select id="selectGCMInfoByMemberIds" parameterType="List"
+		resultMap="gcmInfoResultMap">
+		SELECT
+			IDX,
+			MEMBER_ID,
+			GCM_ID,
+			DEVICE_ID
+		FROM GCMInfo
+		WHERE MEMBER_ID IN
+		<foreach collection="list" item="memberIds" open="("
+			separator="," close=")">
+			#{memberIds}
+		</foreach>
+	</select>
+	
+	<select id="selectGCMInfoByDeviceId" parameterType="String"
+		resultMap="gcmInfoResultMap">
+		SELECT
+			IDX,
+			MEMBER_ID,
+			GCM_ID,
+			DEVICE_ID
+		FROM GCMInfo
+		WHERE DEVICE_ID = #{deviceId}
+	</select>
+	
+	<update id="updateGCMInfo" parameterType="GCMInfo">
+    	UPDATE GCMInfo
+   		SET
+   			MEMBER_ID = #{memberId}
+			,GCM_ID = #{gcmId}
+			,DEVICE_ID = #{deviceId}
+ 		WHERE IDX = #{idx}
+    </update>
+
+	<delete id="deleteGCMInfo" parameterType="int">
+		DELETE
+		FROM GCMInfo
+		WHERE IDX = #{idx}
+	</delete>
+
+	<delete id="deleteGCMInfoByMemberId" parameterType="int">
+		DELETE
+		FROM GCMInfo
+		WHERE MEMBER_ID = #{memberId}
+	</delete>
+
+</mapper>

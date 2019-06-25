@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.MatchingMapper">
+    <resultMap type="Matching" id="matchingResultMap" >
+        <id		property="matchId"		column="MATCH_ID"/>
+        <result property="contractId"	column="CONTRACT_ID"/>
+        <result property="startTime"	column="START_TIME"/>
+        <result property="endTime"		column="END_TIME"/>
+        <result property="status"		column="STATUS"/>
+        <result property="etc"			column="ETC"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="contract" columnPrefix="C_" resultMap="contractResultMap"/>
+        <association property="crocMember" columnPrefix="M_" resultMap="crocMemberResultMap"/>
+    </resultMap>
+    
+    <resultMap type="Contract" id="contractResultMap" >
+        <id		property="contractId"	column="CONTRACT_ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="title"		column="TITLE"/>
+        <result property="content"		column="CONTENT"/>
+        <result property="location" 	column="LOCATION"/>
+        <result property="status" 		column="STATUS"/>
+        <result property="startTime"	column="START_TIME"/>
+        <result	property="endTime" 		column="END_TIME"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="parentMember" columnPrefix="M_" resultMap="parentMemberResultMap"/>
+        <association property="babyInfo" columnPrefix="BI_" resultMap="babyInfoResultMap"/>
+    </resultMap>
+    
+    <resultMap type="Member" id="parentMemberResultMap" >
+        <id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="id"			column="ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="password"		column="PASSWORD"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="memberInfo" columnPrefix="MI_" resultMap="memberInfoResultMap"/>
+    </resultMap>
+    
+    <resultMap type="MemberInfo" id="memberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="tel"			column="TEL"/>
+        <result property="addr"			column="ADDR"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+    
+    <resultMap type="BabyInfo" id="babyInfoResultMap" >
+        <id		property="babyId"		column="BABY_ID"/>
+        <result	property="memberId"		column="MEMBER_ID"/>
+        <result property="name"			column="NAME"/>
+        <result property="age"			column="AGE"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+    
+    <resultMap type="Member" id="crocMemberResultMap" >
+        <id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="id"			column="ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="password"		column="PASSWORD"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="crocMemberInfo" columnPrefix="CMI_" resultMap="crocMemberInfoResultMap"/>
+    </resultMap>
+    
+    
+    <resultMap type="CrocMemberInfo" id="crocMemberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+    	<id		property="level"		column="LEVEL"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="univ"			column="UNIV"/>
+        <result property="major"		column="MAJOR"/>
+        <result property="tel"			column="TEL"/>
+        <result property="email"		column="EMAIL"/>
+        <result property="description"	column="DESCRIPTION"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertMatching" parameterType="Matching" useGeneratedKeys="true" keyProperty="matchId" keyColumn="MATCH_ID">
+		INSERT INTO Matching (
+        	CONTRACT_ID
+        	,MEMBER_ID
+        	,START_TIME
+        	,END_TIME
+        	,STATUS
+        	,ETC
+        	,CREATE_TIME
+        	,UPDATE_TIME
+        	)
+        VALUES (
+	        #{contractId}
+	        ,#{crocMember.memberId}
+	        ,#{startTime}
+	        ,#{endTime}
+	        ,#{status}
+	        ,#{etc}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectMatching" parameterType="int" resultMap="matchingResultMap">
+		SELECT
+			MA.MATCH_ID AS MATCH_ID
+			,MA.CONTRACT_ID AS CONTRACT_ID
+        	,MA.MEMBER_ID AS M_MEMBER_ID
+        	,MA.START_TIME AS START_TIME
+        	,MA.END_TIME AS END_TIME
+        	,MA.STATUS AS STATUS
+        	,MA.ETC AS ETC
+        	,MA.CREATE_TIME AS CREATE_TIME
+        	,MA.UPDATE_TIME AS UPDATE_TIME
+        	,C.CONTRACT_ID AS C_CONTRACT_ID
+        	,C.MEMBER_ID AS C_M_MEMBER_ID 
+			,C.TYPE AS C_TYPE
+			,C.TITLE AS C_TITLE
+			,C.CONTENT AS C_CONTENT
+			,C.LOCATION AS C_LOCATION
+			,C.STATUS AS C_STATUS
+			,C.START_TIME AS C_START_TIME
+			,C.END_TIME AS C_END_TIME
+			,C.CREATE_TIME AS C_CREATE_TIME
+			,C.UPDATE_TIME AS C_UPDATE_TIME
+        	,MC.MEMBER_ID AS C_M_MEMBER_ID 
+			,MC.ID AS M_ID
+        	,MC.TYPE AS M_TYPE
+			,MC.PASSWORD AS M_PASSWORD
+			,MC.CREATE_TIME AS M_CREATE_TIME
+			,MC.UPDATE_TIME AS M_UPDATE_TIME
+			,CMI.MEMBER_ID AS M_CMI_MEMBER_ID
+	    	,CMI.LEVEL AS M_CMI_LEVEL
+	    	,CMI.NAME AS M_CMI_NAME
+	    	,CMI.GENDER AS M_CMI_GENDER
+	    	,CMI.UNIV AS M_CMI_UNIV
+	    	,CMI.MAJOR AS M_CMI_MAJOR
+	    	,CMI.TEL AS M_CMI_TEL
+	    	,CMI.EMAIL AS M_CMI_EMAIL
+	    	,CMI.DESCRIPTION AS M_CMI_DESCRIPTION
+	    	,CMI.IMAGE_URL AS M_CMI_IMAGE_URL
+	    	,CMI.CREATE_TIME AS M_CMI_CREATE_TIME
+	    	,CMI.UPDATE_TIME AS M_CMI_UPDATE_TIME
+	    	,MP.ID AS C_M_ID                  
+			,MP.TYPE AS C_M_TYPE              
+			,MP.PASSWORD AS C_M_PASSWORD      
+			,MP.CREATE_TIME AS C_M_CREATE_TIME
+			,MP.UPDATE_TIME AS C_M_UPDATE_TIME
+			,MI.MEMBER_ID AS C_M_MI_MEMBER_ID
+			,MI.NAME AS C_M_MI_NAME
+			,MI.GENDER AS C_M_MI_GENDER
+			,MI.TEL AS C_M_MI_TEL
+			,MI.ADDR AS C_M_MI_ADDR
+			,MI.IMAGE_URL AS C_M_MI_IMAGE_URL
+			,MI.CREATE_TIME AS C_M_MI_CREATE_TIME
+			,MI.UPDATE_TIME AS C_M_MI_UPDATE_TIME
+			,BI.BABY_ID AS C_BI_BABY_ID
+			,BI.MEMBER_ID AS C_BI_MEMBER_ID
+			,BI.NAME AS C_BI_NAME
+			,BI.AGE AS C_BI_AGE
+			,BI.GENDER AS C_BI_GENDER
+			,BI.IMAGE_URL AS C_BI_IMAGE_URL
+			,BI.CREATE_TIME AS C_BI_CREATE_TIME
+			,BI.UPDATE_TIME AS C_BI_UPDATE_TIME
+		FROM Matching MA
+		INNER JOIN Member MC ON MA.MEMBER_ID = MC.MEMBER_ID 
+		INNER JOIN CrocMemberInfo CMI ON MA.MEMBER_ID = CMI.MEMBER_ID  
+		INNER JOIN Contract C ON MA.CONTRACT_ID = C.CONTRACT_ID
+		INNER JOIN Member MP ON C.MEMBER_ID = MP.MEMBER_ID
+		INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+		WHERE MA.MATCH_ID = #{matchId}
+    </select>
+	
+	<select id="selectMatchingList" resultMap="matchingResultMap">
+		SELECT
+			MATCH_ID 
+			,CONTRACT_ID
+        	,MEMBER_ID AS M_MEMBER_ID
+        	,START_TIME
+        	,END_TIME
+        	,STATUS
+        	,ETC
+        	,CREATE_TIME
+        	,UPDATE_TIME
+		  FROM Matching
+	</select>
+	
+	<select id="selectMatchingListBySearch" parameterType="MatchingSearch" resultMap="matchingResultMap">
+		SELECT 
+			MA.MATCH_ID AS MATCH_ID
+			,MA.CONTRACT_ID AS CONTRACT_ID
+        	,MA.MEMBER_ID AS M_MEMBER_ID
+        	,MA.START_TIME AS START_TIME
+        	,MA.END_TIME AS END_TIME
+        	,MA.STATUS AS STATUS
+        	,MA.ETC AS ETC
+        	,MA.CREATE_TIME AS CREATE_TIME
+        	,MA.UPDATE_TIME AS UPDATE_TIME
+        	,C.CONTRACT_ID AS C_CONTRACT_ID
+        	,C.MEMBER_ID AS C_M_MEMBER_ID 
+			,C.TYPE AS C_TYPE
+			,C.TITLE AS C_TITLE
+			,C.CONTENT AS C_CONTENT
+			,C.LOCATION AS C_LOCATION
+			,C.STATUS AS C_STATUS
+			,C.START_TIME AS C_START_TIME
+			,C.END_TIME AS C_END_TIME
+			,C.CREATE_TIME AS C_CREATE_TIME
+			,C.UPDATE_TIME AS C_UPDATE_TIME
+        	,MC.MEMBER_ID AS C_M_MEMBER_ID 
+			,MC.ID AS M_ID
+        	,MC.TYPE AS M_TYPE
+			,MC.PASSWORD AS M_PASSWORD
+			,MC.CREATE_TIME AS M_CREATE_TIME
+			,MC.UPDATE_TIME AS M_UPDATE_TIME
+			,CMI.MEMBER_ID AS M_CMI_MEMBER_ID
+	    	,CMI.LEVEL AS M_CMI_LEVEL
+	    	,CMI.NAME AS M_CMI_NAME
+	    	,CMI.GENDER AS M_CMI_GENDER
+	    	,CMI.UNIV AS M_CMI_UNIV
+	    	,CMI.MAJOR AS M_CMI_MAJOR
+	    	,CMI.TEL AS M_CMI_TEL
+	    	,CMI.EMAIL AS M_CMI_EMAIL
+	    	,CMI.DESCRIPTION AS M_CMI_DESCRIPTION
+	    	,CMI.IMAGE_URL AS M_CMI_IMAGE_URL
+	    	,CMI.CREATE_TIME AS M_CMI_CREATE_TIME
+	    	,CMI.UPDATE_TIME AS M_CMI_UPDATE_TIME
+	    	,MP.ID AS C_M_ID                  
+			,MP.TYPE AS C_M_TYPE              
+			,MP.PASSWORD AS C_M_PASSWORD      
+			,MP.CREATE_TIME AS C_M_CREATE_TIME
+			,MP.UPDATE_TIME AS C_M_UPDATE_TIME
+			,MI.MEMBER_ID AS C_M_MI_MEMBER_ID
+			,MI.NAME AS C_M_MI_NAME
+			,MI.GENDER AS C_M_MI_GENDER
+			,MI.TEL AS C_M_MI_TEL
+			,MI.ADDR AS C_M_MI_ADDR
+			,MI.IMAGE_URL AS C_M_MI_IMAGE_URL
+			,MI.CREATE_TIME AS C_M_MI_CREATE_TIME
+			,MI.UPDATE_TIME AS C_M_MI_UPDATE_TIME
+			,BI.BABY_ID AS C_BI_BABY_ID
+			,BI.MEMBER_ID AS C_BI_MEMBER_ID
+			,BI.NAME AS C_BI_NAME
+			,BI.AGE AS C_BI_AGE
+			,BI.GENDER AS C_BI_GENDER
+			,BI.IMAGE_URL AS C_BI_IMAGE_URL
+			,BI.CREATE_TIME AS C_BI_CREATE_TIME
+			,BI.UPDATE_TIME AS C_BI_UPDATE_TIME
+		FROM Matching MA
+		INNER JOIN Member MC ON MA.MEMBER_ID = MC.MEMBER_ID 
+		INNER JOIN CrocMemberInfo CMI ON MA.MEMBER_ID = CMI.MEMBER_ID  
+		INNER JOIN Contract C ON MA.CONTRACT_ID = C.CONTRACT_ID
+		INNER JOIN Member MP ON C.MEMBER_ID = MP.MEMBER_ID
+		INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+		WHERE 1 = 1
+			<if test="contractId != 0">
+				AND MA.CONTRACT_ID = #{contractId}
+			</if>
+			<if test="status != 0">
+				AND MA.STATUS = #{status}
+			</if>
+			<if test="parentMemberId != 0">
+				AND MP.MEMBER_ID = #{parentMemberId}
+			</if>
+			<if test="crocMemberId != 0">
+				AND MC.MEMBER_ID = #{crocMemberId}
+			</if>
+		ORDER BY MA.CREATE_TIME DESC	
+		LIMIT #{offset}, #{limit}
+		 
+    </select>
+
+    	    
+    <select id="selectMatchingListTotalCount" parameterType="MatchingSearch" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM Matching MA
+		INNER JOIN Member MC ON MA.MEMBER_ID = MC.MEMBER_ID 
+		INNER JOIN CrocMemberInfo CMI ON MA.MEMBER_ID = CMI.MEMBER_ID  
+		INNER JOIN Contract C ON MA.CONTRACT_ID = C.CONTRACT_ID
+		INNER JOIN Member MP ON C.MEMBER_ID = MP.MEMBER_ID
+		INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+		WHERE 1 = 1
+			<if test="contractId != 0">
+				AND MA.CONTRACT_ID = #{contractId}
+			</if>
+			<if test="status != 0">
+				AND MA.STATUS = #{status}
+			</if>
+			<if test="parentMemberId != 0">
+				AND MP.MEMBER_ID = #{parentMemberId}
+			</if>
+			<if test="crocMemberId != 0">
+				AND MC.MEMBER_ID = #{crocMemberId}
+			</if>
+    </select>
+    
+    <update id="updateMatching" parameterType="Matching">
+    	UPDATE Matching
+   		SET 
+   			CONTRACT_ID = #{contractId}
+   			,MEMBER_ID = #{crocMember.memberId}
+   			,START_TIME = #{startTime}
+   			,END_TIME = #{endTime}
+   			,STATUS = #{status}
+   			,ETC = #{etc}
+   			,UPDATE_TIME = #{updateTime}
+ 		WHERE MATCH_ID = #{matchId};
+    </update>
+    
+    <update id="updateMatchingStatus" parameterType="map">
+    	UPDATE Matching
+   		SET 
+   			STATUS = #{status}
+ 		WHERE MATCH_ID = #{matchId};
+    </update>
+    
+    <update id="updateMatchingStatusByContractId" parameterType="map">
+    	UPDATE Matching
+   		SET 
+   			STATUS = #{status}
+ 		WHERE CONTRACT_ID = #{contractId};
+    </update>
+    
+    <delete id="deleteMatching" parameterType="int">
+    	DELETE
+		FROM Matching
+		WHERE MATCH_ID = #{matchId}
+    </delete>
+ 
+    
+</mapper>

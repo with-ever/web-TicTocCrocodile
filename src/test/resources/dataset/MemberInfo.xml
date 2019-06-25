@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <MemberInfo 
+	    MEMBER_ID = "1"
+		NAME = "김영진"
+		GENDER = "1"
+		TEL = "01012345678"
+		ADDR = "우리집1"
+		IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+    <MemberInfo 
+	    MEMBER_ID = "2"
+		NAME = "송경석"
+		GENDER = "1"
+		TEL = "01000010001"
+		ADDR = "우리집2"
+		IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+    <MemberInfo 
+	    MEMBER_ID = "3"
+		NAME = "윤재웅"
+		GENDER = "2"
+		TEL = "01012345678"
+		ADDR = "우리집3"
+		IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+</dataset>

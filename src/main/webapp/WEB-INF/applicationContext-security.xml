@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-4.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+
+    <context:component-scan base-package="kr.whenever.crocodile.security"/>
+
+    <security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/resources/**" access="permitAll"/>
+        <security:intercept-url pattern="/login" access="permitAll"/>
+        <security:intercept-url pattern="/information/**" access="permitAll"/>
+        <security:intercept-url pattern="/rules/**" access="permitAll"/>
+        <security:intercept-url pattern="/notice/**" access="permitAll"/>
+        <security:intercept-url pattern="/publish/**" access="permitAll"/>
+        <security:intercept-url pattern="/admin/login" access="permitAll"/>
+        <security:intercept-url pattern="/member/signup" access="permitAll"/>
+        <security:intercept-url pattern="/api/**" access="permitAll"/>
+        <!-- <security:intercept-url pattern="/ws/**" access="permitAll"/> -->
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_CROCODILE')"/>
+        <security:form-login login-page="/login" login-processing-url="/login/process" username-parameter="loginId" password-parameter="password" authentication-success-handler-ref="customAuthenticationSuccessHandler"/>
+        <security:logout logout-success-url="/login" invalidate-session="true" logout-url="/logout"/>
+        <security:csrf disabled="true"/>
+        
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+    <!-- 
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="user" authorities="ROLE_USER" password="1234"/>
+            </security:user-service>
+        </security:authentication-provider>
+     -->
+
+		<!-- <security:authentication-provider ref="customerAuthenticationProvider"/> -->
+		<security:authentication-provider user-service-ref="userDetailsServiceImpl">
+			<security:password-encoder ref="shaPassowrdEncoder">
+				<security:salt-source user-property="username"/>
+			</security:password-encoder>
+		</security:authentication-provider> 
+    </security:authentication-manager>
+    
+    
+    <!-- <bean id="customAuthenticationProvider" class="kr.whenever.crocodile.security.CustomAuthenticationProvider"/> -->
+    <bean id="customAuthenticationSuccessHandler" class="kr.whenever.crocodile.security.CustomAuthenticationSuccessHandler"/>
+    
+    <bean id="shaPassowrdEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"></bean>
+
+</beans>
+
+

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.ContractMapper">
+    <resultMap type="Contract" id="contractResultMap" >
+        <id		property="contractId"	column="CONTRACT_ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="title"		column="TITLE"/>
+        <result property="content"		column="CONTENT"/>
+        <result property="location" 	column="LOCATION"/>
+        <result property="status" 		column="STATUS"/>
+        <result property="startTime"	column="START_TIME"/>
+        <result	property="endTime" 		column="END_TIME"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="parentMember" columnPrefix="M_" resultMap="parentMemberResultMap"/>
+        <association property="babyInfo" columnPrefix="BI_" resultMap="babyInfoResultMap"/>
+    </resultMap>
+    
+    <resultMap type="Member" id="parentMemberResultMap" >
+        <id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="id"			column="ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="password"		column="PASSWORD"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="memberInfo" columnPrefix="MI_" resultMap="memberInfoResultMap"/>
+    </resultMap>
+    
+    <resultMap type="MemberInfo" id="memberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="tel"			column="TEL"/>
+        <result property="addr"			column="ADDR"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <resultMap type="BabyInfo" id="babyInfoResultMap" >
+        <id		property="babyId"		column="BABY_ID"/>
+        <result	property="memberId"		column="MEMBER_ID"/>
+        <result property="name"			column="NAME"/>
+        <result property="age"			column="AGE"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertContract" parameterType="Contract" useGeneratedKeys="true" keyProperty="contractId" keyColumn="CONTRACT_ID">
+		INSERT INTO Contract (
+        	TYPE
+			,MEMBER_ID
+			,BABY_ID
+			,TITLE
+			,CONTENT
+			,LOCATION
+			,START_TIME
+			,END_TIME
+			,CREATE_TIME
+			,UPDATE_TIME
+        	)
+        VALUES (
+	        #{type}
+	        ,#{parentMember.memberId}
+	        ,#{babyInfo.babyId}
+	        ,#{title}
+	        ,#{content}
+	        ,#{location}
+	        ,#{startTime}
+	        ,#{endTime}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectContract" parameterType="int" resultMap="contractResultMap">
+		SELECT 
+			C.CONTRACT_ID AS CONTRACT_ID 
+			,C.TYPE AS TYPE
+			,C.TITLE AS TITLE
+			,C.CONTENT AS CONTENT
+			,C.LOCATION AS LOCATION
+			,C.STATUS AS STATUS
+			,C.START_TIME AS START_TIME
+			,C.END_TIME AS END_TIME
+			,C.CREATE_TIME AS CREATE_TIME
+			,C.UPDATE_TIME AS UPDATE_TIME
+			,BI.BABY_ID AS BI_BABY_ID
+			,BI.MEMBER_ID AS BI_MEMBER_ID
+			,BI.NAME AS BI_NAME
+			,BI.AGE AS BI_AGE
+			,BI.GENDER AS BI_GENDER
+			,BI.IMAGE_URL AS BI_IMAGE_URL
+			,BI.CREATE_TIME AS BI_CREATE_TIME
+			,BI.UPDATE_TIME AS BI_UPDATE_TIME
+			,M.MEMBER_ID AS M_MEMBER_ID 
+			,M.ID AS M_ID
+        	,M.TYPE AS M_TYPE
+			,M.PASSWORD AS M_PASSWORD
+			,M.CREATE_TIME AS M_CREATE_TIME
+			,M.UPDATE_TIME AS M_UPDATE_TIME
+			,MI.MEMBER_ID AS M_MI_MEMBER_ID
+			,MI.NAME AS M_MI_NAME
+			,MI.GENDER AS M_MI_GENDER
+			,MI.TEL AS M_MI_TEL
+			,MI.ADDR AS M_MI_ADDR
+			,MI.IMAGE_URL AS M_MI_IMAGE_URL
+			,MI.CREATE_TIME AS M_MI_CREATE_TIME
+			,MI.UPDATE_TIME AS M_MI_UPDATE_TIME
+		FROM Contract C
+			INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+			INNER JOIN Member M ON C.MEMBER_ID = M.MEMBER_ID
+			INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		WHERE C.CONTRACT_ID = #{contractId}
+    </select>
+	
+	<select id="selectContractList" resultMap="contractResultMap">
+		SELECT 
+			C.CONTRACT_ID AS CONTRACT_ID 
+			,C.TYPE AS TYPE
+			,C.TITLE AS TITLE
+			,C.CONTENT AS CONTENT
+			,C.LOCATION AS LOCATION
+			,C.STATUS AS STATUS
+			,C.START_TIME AS START_TIME
+			,C.END_TIME AS END_TIME
+			,C.CREATE_TIME AS CREATE_TIME
+			,C.UPDATE_TIME AS UPDATE_TIME
+			,BI.BABY_ID AS BI_BABY_ID
+			,BI.MEMBER_ID AS BI_MEMBER_ID
+			,BI.NAME AS BI_NAME
+			,BI.AGE AS BI_AGE
+			,BI.GENDER AS BI_GENDER
+			,BI.IMAGE_URL AS BI_IMAGE_URL
+			,BI.CREATE_TIME AS BI_CREATE_TIME
+			,BI.UPDATE_TIME AS BI_UPDATE_TIME
+			,M.MEMBER_ID AS M_MEMBER_ID 
+			,M.ID AS M_ID
+        	,M.TYPE AS M_TYPE
+			,M.PASSWORD AS M_PASSWORD
+			,M.CREATE_TIME AS M_CREATE_TIME
+			,M.UPDATE_TIME AS M_UPDATE_TIME
+			,MI.MEMBER_ID AS M_MI_MEMBER_ID
+			,MI.NAME AS M_MI_NAME
+			,MI.GENDER AS M_MI_GENDER
+			,MI.TEL AS M_MI_TEL
+			,MI.ADDR AS M_MI_ADDR
+			,MI.IMAGE_URL AS M_MI_IMAGE_URL
+			,MI.CREATE_TIME AS M_MI_CREATE_TIME
+			,MI.UPDATE_TIME AS M_MI_UPDATE_TIME
+		FROM Contract C
+			INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+			INNER JOIN Member M ON C.MEMBER_ID = M.MEMBER_ID
+			INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+	</select>
+	
+	<select id="selectContractListBySearch" parameterType="ContractSearch" resultMap="contractResultMap">
+		SELECT 
+			C.CONTRACT_ID AS CONTRACT_ID 
+			,C.TYPE AS TYPE
+			,C.TITLE AS TITLE
+			,C.CONTENT AS CONTENT
+			,C.LOCATION AS LOCATION
+			,C.STATUS AS STATUS
+			,C.START_TIME AS START_TIME
+			,C.END_TIME AS END_TIME
+			,C.CREATE_TIME AS CREATE_TIME
+			,C.UPDATE_TIME AS UPDATE_TIME
+			,BI.BABY_ID AS BI_BABY_ID
+			,BI.MEMBER_ID AS BI_MEMBER_ID
+			,BI.NAME AS BI_NAME
+			,BI.AGE AS BI_AGE
+			,BI.GENDER AS BI_GENDER
+			,BI.IMAGE_URL AS BI_IMAGE_URL
+			,BI.CREATE_TIME AS BI_CREATE_TIME
+			,BI.UPDATE_TIME AS BI_UPDATE_TIME
+			,M.MEMBER_ID AS M_MEMBER_ID 
+			,M.ID AS M_ID
+        	,M.TYPE AS M_TYPE
+			,M.PASSWORD AS M_PASSWORD
+			,M.CREATE_TIME AS M_CREATE_TIME
+			,M.UPDATE_TIME AS M_UPDATE_TIME
+			,MI.MEMBER_ID AS M_MI_MEMBER_ID
+			,MI.NAME AS M_MI_NAME
+			,MI.GENDER AS M_MI_GENDER
+			,MI.TEL AS M_MI_TEL
+			,MI.ADDR AS M_MI_ADDR
+			,MI.IMAGE_URL AS M_MI_IMAGE_URL
+			,MI.CREATE_TIME AS M_MI_CREATE_TIME
+			,MI.UPDATE_TIME AS M_MI_UPDATE_TIME
+		FROM Contract C
+			INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+			INNER JOIN Member M ON C.MEMBER_ID = M.MEMBER_ID
+			INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		WHERE 1 = 1
+			<if test="type != 0">
+				AND C.TYPE = #{type}
+			</if>
+			<if test="memberId != 0">
+				AND C.MEMBER_ID = #{memberId}
+			</if>
+			<if test="title != null">
+				AND C.TITLE LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="status != 0">
+				AND C.STATUS = #{status}
+			</if>
+		ORDER BY C.CREATE_TIME DESC	
+		LIMIT #{offset}, #{limit}
+    </select>
+
+    	    
+    <select id="selectContractListTotalCount" parameterType="ContractSearch" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM Contract C
+			INNER JOIN BabyInfo BI ON C.BABY_ID = BI.BABY_ID
+			INNER JOIN Member M ON C.MEMBER_ID = M.MEMBER_ID
+			INNER JOIN MemberInfo MI ON C.MEMBER_ID = MI.MEMBER_ID
+		WHERE 1 = 1
+			<if test="type != 0">
+				AND C.TYPE = #{type}
+			</if>
+			<if test="memberId != 0">
+				AND C.MEMBER_ID = #{memberId}
+			</if>
+			<if test="title != null">
+				AND C.TITLE LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="status != 0">
+				AND C.STATUS = #{status}
+			</if>
+    </select>
+    
+    <update id="updateContract" parameterType="Contract">
+    	UPDATE Contract
+   		SET 
+   			TYPE = #{type}
+   			,MEMBER_ID = #{parentMember.memberId}
+   			,BABY_ID = #{babyInfo.babyId}
+   			,TITLE = #{title}
+   			,CONTENT = #{content}
+   			,LOCATION = #{location}
+   			,STATUS = #{status}
+   			,START_TIME
+			,END_TIME
+   			,UPDATE_TIME = #{updateTime}
+ 		WHERE CONTRACT_ID = #{contractId}
+    </update>
+    
+    <update id="updateContractStatus" parameterType="map">
+    	UPDATE Contract
+   		SET 
+   			STATUS = #{status}
+ 		WHERE CONTRACT_ID = #{contractId};
+    </update>
+    
+    <delete id="deleteContract" parameterType="int">
+    	DELETE
+		FROM Contract
+		WHERE CONTRACT_ID = #{contractId}
+    </delete>
+ 
+    
+</mapper>

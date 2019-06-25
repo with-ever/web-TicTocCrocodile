@@ -1,0 +1,271 @@
+	body {
+			     font-family:'bon', sans-serif;
+			     margin: auto;
+			     	background:#EEEEEF;
+				
+			}
+			/*
+			 * 배경(백그라운드)
+			 */
+			.wrap {
+				height: 100%;
+		        
+		
+			}
+			#joinBox {
+				width: 500px;
+                margin: auto;		
+                text-align: center;
+                		
+			}
+			#joinBox h1{
+				margin-bottom:1rem;
+				margin-top:10px;
+			   	font-size:20px;
+			   	font-weight:700;
+				text-align: center;
+				color:#184259;
+			}
+
+			/*
+			 * 회원가입버튼
+			 */
+			
+			#joinBtn {
+				font-family:'bon', sans-serif;
+				cursor: pointer;
+				min-height: 50px;
+			}
+		
+
+			#joinBox input{
+				font-family: 'bon', sans-serif;
+				width: 450px;
+				height: 50px;
+				font-size: 16px;
+				font-weight: 700;
+				border: 2px solid #184259;
+				margin: 0 auto 7px auto;
+				background: #fff;
+				color: #000;
+				display: block;
+				vertical-align: middle;
+				padding:0 7px;
+			}
+			 
+			/*
+			 * 학교 학과 인풋
+			 */
+				#joinBox #school,#joinBox #major{
+				
+				width: 223px;
+				height: 50px;
+				display:inline;
+				
+			}
+			/*
+			 * 이메일 인풋
+			 */
+			#joinBox #emailId, #joinBox #emailAddress{
+				width: 215px;
+				height: 50px;
+				display:inline;
+			}
+			/*
+			 * 소개글 텍스트에어리어
+			 */
+			#joinBox .introduce{
+				font-family: 'bon', sans-serif;
+				width: 450px;
+				font-size: 16px;
+				font-weight: 700;
+				border: 2px solid #184259;
+				margin: 20px auto 20px auto;
+				background: #fff;
+				color: #000;
+				display: block;
+				vertical-align: middle;
+				padding:0 7px;
+				resize: none;
+			}
+			
+			
+			
+			#joinBox input:focus {
+				background: #F9FBE7;
+				color: #184270;
+			}
+			/*
+			 * 성별 버튼
+			 */
+			#genderBox{
+				width: 500px;
+				height: 50px;
+				position: relative;
+			}
+			#joinBox .genderBtn{
+				width:44.5%;
+				height: 50px;
+				position: absolute;
+				display: none;
+			}
+			#joinBox .gender{
+				font-family: 'bon', sans-serif;
+				font-size: 18px;
+				font-weight: 700;
+				color: #184259;
+				font-weight: 700;
+				width:44.5%;
+				height: 50px;
+				line-height:50px;
+				position: absolute;
+				right: 25px;
+				cursor: pointer;
+				border: 2px solid #184259;
+				background:#fff;
+				transition: .2s ease;
+			}
+			#joinBox .gender i{
+				color:red;
+				font-weight: 900;
+			    
+			
+			}
+			#joinBox .gender #iconMen{
+				color:#039BE5
+			}
+			#joinBox .gender_men{
+				left:25px;
+			}
+			#joinBox .gender_women{
+				right: 25px;
+			}
+			#joinBox .gender.on {
+				background:#184259;
+				color:#fff;
+			}
+
+			/*
+			 * birthDate 생일
+			 */
+			.birthDay, .likeSpot, .likeTime {
+				width: 500px;
+				height: 60px;
+			}
+			.birthDay > select,.likeSpot > select,.likeTime select {
+				font:600 20px 'bon', sans-serif;
+				width: 120px;
+				height: 40px;
+				font-size: 16px;
+				font-weight: 700;
+				border: none;
+				margin: 0 auto 7px auto;
+				background: #fff;
+				color: #000;
+				display:inline-block;
+				vertical-align: middle;
+				padding:0 7px;
+				
+			}
+			.birthDay > select:focus,.likeSpot > select:focus, .likeTime > select:focus{
+				color: #184259;
+				background:#eee;
+			}
+			.day{
+				font-weight: 700;
+				font-size: 20px;
+				color:#184259;
+				height: 60px;
+				line-height: 60px;
+			}
+
+			/*
+			 * 활동 가능 지역
+			 */
+			.likeSpot>.spot {
+				margin-right:10px;
+			    font-weight: 700;
+				font-size: 20px;
+				color:#184259;
+				height: 60px;
+				line-height: 60px;
+			
+			}
+			/*
+			 * 활동 가능 시간
+			 */
+			 #likeTimeBox .time {
+			    font-weight: 700;
+				font-size: 20px;
+				color:#184259;
+				height: 60px;
+				line-height: 60px;
+			
+			}
+			/*
+			 * btn
+			 */
+			#joinBtn {
+				
+				font-family: 'bon', sans-serif;
+				font-size:18px;
+				font-weight:700;
+				width: 420px;
+				height: 50px;
+				border: none;
+				background: #184259;
+				line-height: 50px;
+				display: inline-block;
+				vertical-align: middle;
+				color: #fff;
+				margin-bottom: 20px;
+			}
+			
+			#joinBtn:hover {
+				background: #184270;
+			}
+			#joinBtn:hover:before {
+				transform: scaleX(1);
+			}
+			.close {
+				border: none;
+				background-color: transparent;
+				font-size: 28px;
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				color: #222;
+			}
+			.close:hover {
+				color:#008D7D;
+			}
+			
+			/*
+			 * 프로필 이미지
+			 */
+		   .profile_img{
+		   	width: 100px;
+		    height:100px;
+		    margin: 10px;
+		   }
+		   .profile_plus{
+		   	font-size:40px;
+		    font-weight:700;
+		    vertical-align: bottom;
+		    color: #184270;
+		   }
+		   .time_plus{
+		   	font-size:30px;
+		    font-weight:700;
+		    vertical-align: bottom;
+		    color: #184270;
+		   }
+		   
+		   /*
+			 *로고 이미지
+			 */
+			
+		   .logo img{
+				height:150px;
+		        padding-right:100px;
+			}

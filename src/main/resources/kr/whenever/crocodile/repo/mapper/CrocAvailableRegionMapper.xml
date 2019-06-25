@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.CrocAvailableRegionMapper">
+    <resultMap type="CrocAvailableRegion" id="crocAvailableRegionResultMap" >
+        <result	property="memberId"		column="MEMBER_ID"/>
+        <result property="regionId"	column="REGION_ID"/>
+    </resultMap>
+
+        <insert id="insertCrocAvailableRegion" parameterType="CrocAvailableRegion">
+		INSERT INTO CrocAvailableRegion (
+			MEMBER_ID
+			,REGION_ID
+        	)
+        VALUES (
+	        #{memberId}
+	        ,#{regionId}
+        )
+    </insert>
+
+    <select id="selectCrocAvailableRegion" parameterType="map" resultMap="crocAvailableRegionResultMap">
+		SELECT
+			MEMBER_ID
+			,REGION_ID
+		FROM CrocAvailableRegion
+		WHERE MEMBER_ID = #{memberId} AND REGION_ID = #{regionId}
+    </select>
+	
+	<select id="selectCrocAvailableRegionList" parameterType="int" resultMap="crocAvailableRegionResultMap">
+		SELECT 
+			MEMBER_ID
+			,REGION_ID
+	  	FROM CrocAvailableRegion
+	  	WHERE MEMBER_ID = #{memberId} 
+	</select>
+
+    <delete id="deleteCrocAvailableRegion" parameterType="map">
+    	DELETE
+		FROM CrocAvailableRegion
+		WHERE MEMBER_ID = #{memberId} AND REGION_ID = #{regionId}
+    </delete>
+    
+    <delete id="deleteAllCrocAvailableRegion" parameterType="int">
+    	DELETE
+    	FROM CrocAvailableRegion
+    	WHERE MEMBER_ID = #{memberId}
+    </delete>
+    
+</mapper>

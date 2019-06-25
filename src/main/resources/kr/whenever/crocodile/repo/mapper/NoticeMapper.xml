@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.NoticeMapper">
+    <resultMap type="Notice" id="noticeResultMap" >
+        <id		property="noticeId"		column="NOTICE_ID"/>
+        <result property="title"		column="TITLE"/>
+        <result property="content"		column="CONTENT"/>
+        <result property="adminId"		column="ADMIN_ID"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertNotice" parameterType="Notice" useGeneratedKeys="true" keyProperty="" keyColumn="NOTICE_ID">
+		INSERT INTO Notice (
+			TITLE
+			,CONTENT
+			,ADMIN_ID
+			,CREATE_TIME
+			,UPDATE_TIME
+        	)
+        VALUES (
+	        #{title}
+	        ,#{content}
+	        ,#{adminId}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectNotice" parameterType="int" resultMap="noticeResultMap">
+		SELECT
+			NOTICE_ID 
+			,TITLE
+			,CONTENT
+			,ADMIN_ID
+			,CREATE_TIME
+			,UPDATE_TIME
+		  FROM Notice
+		  WHERE NOTICE_ID = #{noticeId}
+    </select>
+	
+	<select id="selectNoticeList" resultMap="noticeResultMap">
+		SELECT 
+			NOTICE_ID 
+			,TITLE
+			,CONTENT
+			,ADMIN_ID
+			,CREATE_TIME
+			,UPDATE_TIME
+		  FROM Notice
+	</select>
+	
+	<select id="selectNoticeListBySearch" parameterType="NoticeSearch" resultMap="noticeResultMap">
+		SELECT 
+			NOTICE_ID
+			,TITLE
+			,CONTENT
+			,ADMIN_ID
+			,CREATE_TIME
+			,UPDATE_TIME
+		FROM Notice
+		WHERE 1 = 1
+			<choose>
+			    <when test="title != null and title != ''">
+			    	AND TITLE LIKE CONCAT('%', #{title}, '%')
+			    </when>
+			    <when test="content != null and content != ''">
+			    	AND CONTENT LIKE CONCAT('%', #{content}, '%')
+			    </when>
+			</choose>
+		LIMIT #{offset}, #{limit}
+    </select>
+    
+    <select id="selectNoticeListTotalCount" parameterType="NoticeSearch" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM Notice
+		WHERE 1 = 1
+			<choose>
+			    <when test="title != null and title != ''">
+			    	AND TITLE LIKE CONCAT('%', #{title}, '%')
+			    </when>
+			    <when test="content != null and content != ''">
+			    	AND CONTENT LIKE CONCAT('%', #{content}, '%')
+			    </when>
+			</choose>
+    </select>
+    
+    <update id="updateNotice" parameterType="Notice">
+    	UPDATE Notice
+   		SET 
+   			TITLE = #{title}
+   			,CONTENT = #{content}
+   			,ADMIN_ID = #{adminId}
+   			,UPDATE_TIME = #{updateTime}
+ 		WHERE NOTICE_ID = #{noticeId};
+    </update>
+    
+    <delete id="deleteNotice" parameterType="int">
+    	DELETE
+		FROM Notice
+		WHERE NOTICE_ID = #{noticeId}
+    </delete>
+    
+</mapper>

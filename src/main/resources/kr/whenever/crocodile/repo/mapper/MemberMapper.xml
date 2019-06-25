@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.MemberMapper">
+    <resultMap type="Member" id="memberResultMap" >
+        <id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="id"			column="ID"/>
+        <result property="type"			column="TYPE"/>
+        <result property="password"		column="PASSWORD"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+        <association property="memberInfo" columnPrefix="MI_" resultMap="memberInfoResultMap"/>
+        <association property="crocMemberInfo" columnPrefix="CMI_" resultMap="crocMemberInfoResultMap"/>
+    </resultMap>
+    
+    <resultMap type="MemberInfo" id="memberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="tel"			column="TEL"/>
+        <result property="addr"			column="ADDR"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+    
+    <resultMap type="CrocMemberInfo" id="crocMemberInfoResultMap">
+    	<id		property="memberId"		column="MEMBER_ID"/>
+    	<id		property="level"		column="LEVEL"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="univ"			column="UNIV"/>
+        <result property="major"		column="MAJOR"/>
+        <result property="tel"			column="TEL"/>
+        <result property="email"		column="EMAIL"/>
+        <result property="description"	column="DESCRIPTION"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId" keyColumn="MEMBER_ID">
+		INSERT INTO Member (
+        	ID
+        	,TYPE
+			,PASSWORD
+			,CREATE_TIME
+			,UPDATE_TIME
+        	)
+        VALUES (
+	        #{id}
+	        ,#{type}
+	        ,#{password}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectMember" parameterType="String" resultMap="memberResultMap">
+		SELECT
+			MEMBER_ID 
+			,ID
+        	,TYPE
+			,PASSWORD
+			,CREATE_TIME
+			,UPDATE_TIME
+		  FROM Member
+		  WHERE ID = #{id}
+    </select>
+
+    <select id="selectMemberByMemberId" parameterType="int" resultMap="memberResultMap">
+		SELECT
+			MEMBER_ID 
+			,ID
+        	,TYPE
+			,PASSWORD
+			,CREATE_TIME
+			,UPDATE_TIME
+		  FROM Member
+		  WHERE MEMBER_ID = #{memberId}
+    </select>
+	
+	<select id="selectMemberList" resultMap="memberResultMap">
+		SELECT 
+			MEMBER_ID 
+			,ID
+        	,TYPE
+			,PASSWORD
+			,CREATE_TIME
+			,UPDATE_TIME
+		  FROM Member
+	</select>
+       	    
+    <select id="selectMemberListBySearch" parameterType="MemberSearch" resultMap="memberResultMap">
+		SELECT 
+			M.MEMBER_ID AS MEMBER_ID
+			,M.ID AS ID
+        	,M.TYPE AS TYPE
+			,M.PASSWORD AS PASSWORD
+			,M.CREATE_TIME AS CREATE_TIME
+			,M.UPDATE_TIME AS UPDATE_TIME
+			<choose>
+			    <when test="type == 1">
+			    	,MI.MEMBER_ID AS MI_MEMBER_ID
+			    	,MI.NAME AS MI_NAME
+			    	,MI.GENDER AS MI_GENDER
+			    	,MI.TEL AS MI_TEL
+			    	,MI.ADDR AS MI_ADDR
+			    	,MI.IMAGE_URL AS MI_IMAGE_URL
+			    	,MI.CREATE_TIME AS MI_CREATE_TIME
+			    	,MI.UPDATE_TIME AS MI_UPDATE_TIME
+			    </when>
+			    <when test="type == 2">
+			      	,CMI.MEMBER_ID AS CMI_MEMBER_ID
+			    	,CMI.LEVEL AS CMI_LEVEL
+			    	,CMI.NAME AS CMI_NAME
+			    	,CMI.GENDER AS CMI_GENDER
+			    	,CMI.UNIV AS CMI_UNIV
+			    	,CMI.MAJOR AS CMI_MAJOR
+			    	,CMI.TEL AS CMI_TEL
+			    	,CMI.EMAIL AS CMI_EMAIL
+			    	,CMI.DESCRIPTION AS CMI_DESCRIPTION
+			    	,CMI.IMAGE_URL AS CMI_IMAGE_URL
+			    	,CMI.CREATE_TIME AS CMI_CREATE_TIME
+			    	,CMI.UPDATE_TIME AS CMI_UPDATE_TIME
+			    </when>
+			</choose>
+		FROM Member M
+		<choose>
+		    <when test="type == 1">
+				INNER JOIN MemberInfo MI ON M.MEMBER_ID = MI.MEMBER_ID  
+		    </when>
+		    <when test="type == 2">
+				INNER JOIN CrocMemberInfo CMI ON M.MEMBER_ID = CMI.MEMBER_ID
+				<if test="regionId != 0">
+					INNER JOIN CrocAvailableRegion CAR ON M.MEMBER_ID = CAR.MEMBER_ID
+				</if>
+				<if test="serviceId != 0">
+					INNER JOIN CrocAvailableService CAS ON M.MEMBER_ID = CAS.MEMBER_ID
+				</if>
+				<if test="day != 0">
+					INNER JOIN CrocAvailableTime CAT ON M.MEMBER_ID = CAT.MEMBER_ID
+				</if>
+		    </when>
+		</choose>
+		WHERE 1 = 1
+			<if test="type != 0">
+				AND M.TYPE = #{type}
+			</if>
+			<choose>
+			    <when test="type == 1 and name != null and name != ''">
+			    	AND MI.NAME LIKE CONCAT('%', #{name}, '%')
+			    </when>
+			    <when test="type == 2 and name != null and name != ''">
+			    	AND CMI.NAME LIKE CONCAT('%', #{name}, '%')
+			    </when>
+			</choose>
+			<choose>
+			    <when test="type == 1 and tel != null and tel != ''">
+			    	AND MI.TEL LIKE CONCAT('%', #{tel}, '%')
+			    </when>
+			    <when test="type == 2 and tel != null and tel != ''">
+			    	AND CMI.TEL LIKE CONCAT('%', #{tel}, '%')
+			    </when>
+			</choose>
+			<choose>
+			    <when test="type == 1 and gender != null and gender != ''">
+			    	AND MI.GENDER = #{gender}
+			    </when>
+			    <when test="type == 2 and gender != null and gender != ''">
+			    	AND CMI.GENDER = #{gender}
+			    </when>
+			</choose>
+			<if test="type == 2 and regionId != 0">
+				AND CAR.REGION_ID = #{regionId}
+			</if>
+			<if test="type == 2 and serviceId != 0">
+				AND CAS.SERVICE_ID = #{serviceId}
+			</if>
+			<if test="type == 2 and day != 0">
+				AND CAT.DAY = #{day}
+			</if>
+		LIMIT #{offset}, #{limit}
+    </select>
+
+    	    
+    <select id="selectMemberListTotalCount" parameterType="MemberSearch" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM Member M
+		<choose>
+		    <when test="type == 1">
+				INNER JOIN MemberInfo MI ON M.MEMBER_ID = MI.MEMBER_ID  
+		    </when>
+		    <when test="type == 2">
+				INNER JOIN CrocMemberInfo CMI ON M.MEMBER_ID = CMI.MEMBER_ID
+				<if test="regionId != 0">
+					INNER JOIN CrocAvailableRegion CAR ON M.MEMBER_ID = CAR.MEMBER_ID
+				</if>
+				<if test="serviceId != 0">
+					INNER JOIN CrocAvailableService CAS ON M.MEMBER_ID = CAS.MEMBER_ID
+				</if>
+				<if test="day != 0">
+					INNER JOIN CrocAvailableTime CAT ON M.MEMBER_ID = CAT.MEMBER_ID 
+				</if>
+		    </when>
+		</choose>
+		WHERE 1 = 1
+			<if test="type != 0">
+				AND M.TYPE = #{type}
+			</if>
+			<choose>
+			    <when test="type == 1 and name != null and name != ''">
+			    	AND MI.NAME LIKE CONCAT('%', #{name}, '%')
+			    </when>
+			    <when test="type == 2 and name != null and name != ''">
+			    	AND CMI.NAME LIKE CONCAT('%', #{name}, '%')
+			    </when>
+			</choose>
+			<choose>
+			    <when test="type == 1 and tel != null and tel != ''">
+			    	AND MI.TEL LIKE CONCAT('%', #{tel}, '%')
+			    </when>
+			    <when test="type == 2 and tel != null and tel != ''">
+			    	AND CMI.TEL LIKE CONCAT('%', #{tel}, '%')
+			    </when>
+			</choose>
+			<choose>
+			    <when test="type == 1 and gender != null and gender != ''">
+			    	AND MI.GENDER = #{gender}
+			    </when>
+			    <when test="type == 2 and gender != null and gender != ''">
+			    	AND CMI.GENDER = #{gender}
+			    </when>
+			</choose>
+			<if test="type == 2 and regionId != 0">
+				AND CAR.REGION_ID = #{regionId}
+			</if>
+			<if test="type == 2 and serviceId != 0">
+				AND CAS.SERVICE_ID = #{serviceId}
+			</if>
+			<if test="type == 2 and day != 0">
+				AND CAT.DAY = #{day}
+			</if>
+    </select>
+    
+    <select id="checkId" parameterType="String" resultType="int">
+    	SELECT
+    		COUNT(1)
+    	FROM Member
+    	WHERE ID = #{id}
+    </select>
+    
+    <update id="updateMember" parameterType="Member">
+    	UPDATE Member
+   		SET 
+			UPDATE_TIME = #{updateTime}
+ 		WHERE ID = #{id}
+    </update>
+    
+    <delete id="deleteMember" parameterType="String">
+    	DELETE
+		FROM Member
+		WHERE ID = #{id}
+    </delete>
+    
+    <select id="selectMemberByIdWithPassword" parameterType="map" resultType="boolean">
+    	SELECT
+    		COUNT(1)
+    	FROM Member
+    	WHERE ID = #{id} AND PASSWORD = #{password}
+    </select>
+ 
+    <update id="updateMemberPassword" parameterType="map">
+    	UPDATE Member
+   		SET
+   			PASSWORD = #{password}  
+ 		WHERE ID = #{id}
+    </update>
+    
+    <select id="selectLastMemberId" resultType="int">
+    	SELECT MAX(MEMBER_ID) + 1 FROM Member;
+    </select>
+    
+</mapper>

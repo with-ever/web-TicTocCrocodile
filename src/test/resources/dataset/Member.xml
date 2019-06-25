@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <Member MEMBER_ID = "1" ID="yjkim" TYPE="1" PASSWORD='123' CREATE_TIME="1464346392" UPDATE_TIME="1464346392"/>
+    <Member MEMBER_ID = "2" ID="kssong" TYPE="1"  PASSWORD='123' CREATE_TIME="1464346392" UPDATE_TIME="1464346392"/>
+    <Member MEMBER_ID = "3" ID="yjwoong" TYPE="3"  PASSWORD='123' CREATE_TIME="1464346392" UPDATE_TIME="1464346392"/>
+</dataset>

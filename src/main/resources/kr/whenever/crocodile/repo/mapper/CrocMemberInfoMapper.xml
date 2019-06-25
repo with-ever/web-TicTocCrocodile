@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.CrocMemberInfoMapper">
+
+    <resultMap type="CrocMemberInfo" id="crocMemberInfoResultMap">
+    	<id		property="memberId"	column="MEMBER_ID"/>
+    	<id		property="level"		column="LEVEL"/>
+        <result	property="name"			column="NAME"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="univ"			column="UNIV"/>
+        <result property="major"		column="MAJOR"/>
+        <result property="tel"			column="TEL"/>
+        <result property="email"		column="EMAIL"/>
+        <result property="description"	column="DESCRIPTION"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertCrocMemberInfo" parameterType="CrocMemberInfo">
+		INSERT INTO CrocMemberInfo (
+			MEMBER_ID
+			,LEVEL
+			,NAME
+			,GENDER
+			,UNIV
+			,MAJOR
+			,TEL
+			,EMAIL
+			,DESCRIPTION
+			,IMAGE_URL
+			,CREATE_TIME 
+			,UPDATE_TIME
+        	)
+        VALUES (
+	        #{memberId}
+	        ,#{level}
+	        ,#{name}
+	        ,#{gender}
+	        ,#{univ}
+	        ,#{major}
+	        ,#{tel}
+	        ,#{email}
+			,#{description}
+			,#{imageUrl}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectCrocMemberInfo" parameterType="int" resultMap="crocMemberInfoResultMap">
+		SELECT
+			MEMBER_ID
+			,LEVEL
+			,NAME
+			,GENDER
+			,UNIV
+			,MAJOR
+			,TEL
+			,EMAIL
+			,DESCRIPTION
+			,IMAGE_URL
+			,CREATE_TIME 
+			,UPDATE_TIME
+		FROM CrocMemberInfo
+		WHERE MEMBER_ID = #{memberId}
+    </select>
+    
+    <update id="updateCrocMemberInfo" parameterType="CrocMemberInfo">
+    	UPDATE CrocMemberInfo
+   		SET
+   			LEVEL = #{level}
+   			,NAME = #{name}
+			,GENDER = #{gender}
+			,UNIV = #{univ}
+			,MAJOR = #{major}
+			,TEL = #{tel}
+			,EMAIL = #{email}
+			,DESCRIPTION = #{description}
+			<if test="imageUrl != null">
+			,IMAGE_URL = #{imageUrl}
+			</if>
+			,UPDATE_TIME = #{updateTime}
+ 		WHERE MEMBER_ID = #{memberId};
+    </update>
+    
+    <delete id="deleteCrocMemberInfo" parameterType="int">
+    	DELETE
+		FROM CrocMemberInfo
+		WHERE MEMBER_ID = #{memberId}
+    </delete>
+ 
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.SNSInfoMapper">
+    <resultMap type="SNSInfo" id="snsInfoResultMap" >
+        <id		property="idx"		column="IDX"/>
+        <result	property="memberId"		column="MEMBER_ID"/>
+        <result property="snsId"		column="SNS_ID"/>
+        <result property="snsType"		column="SNS_TYPE"/>
+    </resultMap>
+
+    <insert id="insertSNSInfo" parameterType="SNSInfo" useGeneratedKeys="true" keyProperty="idx" keyColumn="IDX">
+		INSERT INTO SNSInfo (
+			MEMBER_ID,
+			SNS_ID,
+			SNS_TYPE
+        	)
+        VALUES (
+	        #{memberId}
+	        ,#{snsId}
+	        ,#{snsType}
+        )
+    </insert>
+
+    <select id="selectSNSInfo" parameterType="int" resultMap="snsInfoResultMap">
+		SELECT
+			IDX,
+			MEMBER_ID,
+			SNS_ID,
+			SNS_TYPE
+		FROM SNSInfo
+		WHERE IDX = #{idx}
+    </select>
+
+    <select id="selectSNSInfoBySnsId" parameterType="map" resultMap="snsInfoResultMap">
+    	SELECT
+			IDX,
+			MEMBER_ID,
+			SNS_ID,
+			SNS_TYPE
+		FROM SNSInfo
+		WHERE SNS_ID = #{snsId} AND SNS_TYPE = #{snsType} 
+    </select>
+    
+    <select id="selectSNSInfoByMemberId" parameterType="int" resultMap="snsInfoResultMap">
+    	SELECT
+			IDX,
+			MEMBER_ID,
+			SNS_ID,
+			SNS_TYPE
+		FROM SNSInfo
+		WHERE MEMBER_ID = #{memberId} 
+    </select>
+	
+    <delete id="deleteSNSInfo" parameterType="int">
+    	DELETE
+		FROM SNSInfo
+		WHERE IDX = #{idx}
+    </delete>
+ 
+    
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <GCMInfo 
+	    IDX = "1"
+		MEMBER_ID = "1"
+		GCM_ID = "2393812391"
+		DEVICE_ID = "bsdfsadfasd"
+	/>
+	
+	    <GCMInfo 
+	    IDX = "2"
+		MEMBER_ID = "2"
+		GCM_ID = "kfskafskdafasdk"
+		DEVICE_ID = "1023123"
+	/>
+	
+	    <GCMInfo 
+	    IDX = "3"
+		MEMBER_ID = "3"
+		GCM_ID = "9999123123"
+		DEVICE_ID = "aaavvvv"
+	/>
+</dataset>

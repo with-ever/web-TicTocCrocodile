@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <BabyInfo 
+	    BABY_ID = "1"
+		MEMBER_ID = "1"
+		NAME = "김아기"
+		AGE = "2"
+		GENDER = "1"
+	  	IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+    <BabyInfo 
+	    BABY_ID = "2"
+		MEMBER_ID = "1"
+		NAME = "임아기"
+		AGE = "4"
+		GENDER = "1"
+		IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+    <BabyInfo 
+	    BABY_ID = "3"
+		MEMBER_ID = "2"
+		NAME = "아기이이"
+		AGE = "2"
+		GENDER = "1"
+		IMAGE_URL= "abc"
+		CREATE_TIME = "1464346392" 
+		UPDATE_TIME = "1464346392"
+	/>
+</dataset>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <CrocAvailableTime 
+    	TIME_ID = "1"
+	    MEMBER_ID = "1"
+	    DAY = "0"
+	    START_TIME = "9"
+	    END_TIME = "11"
+	/>
+	<CrocAvailableTime 
+    	TIME_ID = "2"
+	    MEMBER_ID = "1"
+	    DAY = "1"
+	    START_TIME = "11"
+	    END_TIME = "12"
+	/>
+	<CrocAvailableTime 
+    	TIME_ID = "3"
+	    MEMBER_ID = "1"
+	    DAY = "2"
+	    START_TIME = "11"
+	    END_TIME = "12"
+	/>
+	<CrocAvailableTime 
+    	TIME_ID = "4"
+	    MEMBER_ID = "2"
+	    DAY = "1"
+	    START_TIME = "19"
+	    END_TIME = "21"
+	/>
+</dataset>

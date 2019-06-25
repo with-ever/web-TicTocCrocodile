@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.BabyInfoMapper">
+    <resultMap type="BabyInfo" id="babyInfoResultMap" >
+        <id		property="babyId"		column="BABY_ID"/>
+        <result	property="memberId"		column="MEMBER_ID"/>
+        <result property="name"			column="NAME"/>
+        <result property="age"			column="AGE"/>
+        <result property="gender"		column="GENDER"/>
+        <result property="imageUrl"		column="IMAGE_URL"/>
+        <result property="createTime"  	column="CREATE_TIME"/>
+        <result property="updateTime"  	column="UPDATE_TIME"/>
+    </resultMap>
+
+    <insert id="insertBabyInfo" parameterType="BabyInfo" useGeneratedKeys="true" keyProperty="babyId" keyColumn="BABY_ID">
+		INSERT INTO BabyInfo (
+			MEMBER_ID,
+			NAME,
+			AGE,
+			GENDER,
+			IMAGE_URL,
+			CREATE_TIME,
+			UPDATE_TIME
+        	)
+        VALUES (
+	        #{memberId}
+	        ,#{name}
+	        ,#{age}
+	        ,#{gender}
+	        ,#{imageUrl}
+	        ,#{createTime}
+	        ,#{updateTime}
+        )
+    </insert>
+
+    <select id="selectBabyInfo" parameterType="int" resultMap="babyInfoResultMap">
+		SELECT
+        	BABY_ID,
+			MEMBER_ID,
+			NAME,
+			AGE,
+			GENDER,
+			IMAGE_URL,
+			CREATE_TIME,
+			UPDATE_TIME
+		  FROM BabyInfo
+		  WHERE BABY_ID = #{babyId}
+    </select>
+	
+	<select id="selectBabyInfoList" parameterType="int" resultMap="babyInfoResultMap">
+		SELECT 
+        	BABY_ID,
+			MEMBER_ID,
+			NAME,
+			AGE,
+			GENDER,
+			IMAGE_URL,
+			CREATE_TIME,
+			UPDATE_TIME
+		  FROM BabyInfo
+		  WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<select id="selectBabyInfoListBySearch" parameterType="BabyInfoSearch" resultMap="babyInfoResultMap">
+		SELECT 
+        	BABY_ID,
+			MEMBER_ID,
+			NAME,
+			AGE,
+			GENDER,
+			IMAGE_URL,
+			CREATE_TIME,
+			UPDATE_TIME
+		  FROM BabyInfo
+		  WHERE 1 = 1
+		  <if test="memberId != 0">
+		  	AND MEMBER_ID = #{memberId}
+		  </if>
+	</select>
+	
+	<select id="selectBabyInfoListTotalCount" parameterType="BabyInfoSearch" resultType="int">
+		SELECT 
+        	COUNT(1)
+		  FROM BabyInfo
+		  WHERE 1 = 1
+		  <if test="memberId != 0">
+		  	AND MEMBER_ID = #{memberId}
+		  </if>
+	</select>
+	
+    
+    <update id="updateBabyInfo" parameterType="BabyInfo">
+    	UPDATE BabyInfo
+   		SET 
+			NAME = #{name}
+			,AGE = #{age}
+			,GENDER = #{gender}
+			,IMAGE_URL = #{imageUrl}
+			,UPDATE_TIME = #{updateTime}
+ 		WHERE BABY_ID = #{babyId}
+    </update>
+    
+    <delete id="deleteBabyInfo" parameterType="int">
+    	DELETE
+		FROM BabyInfo
+		WHERE BABY_ID = #{babyId}
+    </delete>
+ 
+    
+</mapper>

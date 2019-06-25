@@ -1,0 +1,140 @@
+			html {
+				height:100%;
+			}
+	          body{
+	          	
+	          	background:#EEEEEF;
+	          }
+			
+			.wrap{
+				position: relative;
+				height: 100%;
+				overflow: hidden;
+			}
+			.bgvid.back {
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				min-width: 100%;
+				min-height: 100%;
+				width: auto;
+				height: auto;
+				z-index: -100;
+			}
+			#loginBox {
+				width: 1500px;
+				text-align: center;
+				
+			}
+			#loginBox #id{
+				margin-bottom:5px;
+				
+			}
+			#loginBox input {
+				font-family: 'bon', sans-serif;
+				width: 400px;
+				height: 35px;
+				font-size: 18px;
+				font-weight:700;
+			    border: 2px solid #184259;
+				padding: 10px 10px;
+				margin:auto;
+				background: #fff;
+				color: #000;
+				display: block;
+				vertical-align: middle;
+			}
+			#loginBox input:focus {
+				background: #F9FBE7;
+				color: #184270;
+			}
+			
+			.join {
+				text-decoration: none;
+				font-size: 16px;
+				color:#184259;
+				font-weight: 700;
+			}
+			.join:hover {
+			  color:#184280;
+			}
+			span {
+				font-size: 18px;
+			}
+			.logo {
+				text-align: center;
+				padding:30px 0 50px 0;
+				}
+			.logo img{
+				height:150px;
+		        padding-right:40px;
+			}
+
+			.login_btn {
+				margin: 20px auto 80px auto;
+				font-family: 'bon', sans-serif;
+				font-size:18px;
+				font-weight:700;
+				width: 420px;
+				height: 50px;
+				border: none;
+				background: #184259;
+				line-height: 50px;
+				display: inline-block;
+				vertical-align: middle;
+				position: relative;
+				color: #fff;
+			}
+			
+			.login_btn:hover {
+		     background: #184270;
+			}
+			.footer_log{
+				padding-top:50px;
+				width: 120px;
+				height: 120px;
+			}
+			
+			/*
+			 * 풋터
+			 */
+			 
+
+#footer {
+	color:#184270;
+	line-height: 64px;
+	vertical-align: top;
+	margin-top: 10px;
+	
+}
+
+
+
+#footer a {
+	color:#184270;
+	text-decoration: none;
+}
+#footer a:hover {
+	text-decoration: underline;
+}
+
+#policy {
+	width:1000px;
+	text-align: center;
+	margin: auto;
+}
+
+#policy li {
+	display: inline;
+	border-right:1px solid #184270;
+	padding-right:10px;
+	margin-left:15px;
+}
+
+#policy li:last-child {
+	border:none;
+}
+
+#policy strong {
+	font-weight:500;
+}

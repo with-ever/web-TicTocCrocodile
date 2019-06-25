@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="kr.whenever.crocodile.repo.mapper.UserMapper">
+    <resultMap id="userResultMap" type="User" >
+        <id			property="pid"				column="USER_PID"/>
+        <result    	property="uid"        		column="USER_UID"/>
+        <result		property="password"			column="PASSWORD"/>
+        <result		property="nickname"			column="NICKNAME"/>
+        <result 	property="cellPhoneNo"  	column="USER_PHONE"/>
+        <result 	property="birthDate"  		column="BIRTH_DATE"/>
+        <result 	property="school"	  		column="USER_SCHOOL"/>
+        <result 	property="type"	  			column="USER_TYPE"/>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="User">
+		INSERT INTO W_USER (
+        	USER_UID
+        	,PASSWORD
+        	,NICKNAME
+        	,USER_PHONE
+        	,BIRTH_DATE
+        	,USER_SCHOOL
+        	,USER_TYPE
+        	)
+        VALUES (
+	        #{uid}
+	        ,#{password}
+	        ,#{nickname}
+	        ,#{cellPhoneNo}
+	        ,#{birthDate}
+	        ,#{school}
+	        ,#{type}
+        )
+    </insert>
+    
+    <update id="updateUser" parameterType="User">
+    	UPDATE W_USER
+   		SET 
+   			PASSWORD = #{password}
+   			,NICKNAME = #{nickname}
+   			,USER_PHONE = #{cellPhoneNo}
+   			,BIRTH_DATE = #{birthDate}
+   			,USER_SCHOOL = #{school}
+   			,USER_TYPE = #{type}
+ 		WHERE USER_PID = #{pid};
+    </update>
+    
+    <delete id="deleteUser" parameterType="Long">
+    	DELETE
+		FROM W_USER
+		WHERE USER_PID = #{pid}
+    </delete>
+    
+    <select id="selectUser" parameterType="Long" resultMap="userResultMap">
+		SELECT 
+			USER_PID
+			,USER_UID
+			,PASSWORD
+        	,NICKNAME
+        	,USER_PHONE
+        	,BIRTH_DATE
+        	,USER_SCHOOL
+        	,USER_TYPE
+		  FROM W_USER
+		  WHERE USER_PID = #{pid}
+    </select>
+	
+	<select id="selectUserList" resultMap="userResultMap">
+		SELECT 
+			USER_PID
+			,USER_UID
+			,PASSWORD
+        	,NICKNAME
+        	,USER_PHONE
+        	,BIRTH_DATE
+        	,USER_SCHOOL
+        	,USER_TYPE
+		  FROM W_USER
+	</select>
+	    
+    <select id="selectUserByEmail" parameterType="String" resultMap="userResultMap">
+		SELECT 
+			USER_PID
+			,USER_UID
+			,PASSWORD
+	     	,NICKNAME
+	     	,USER_PHONE
+	     	,BIRTH_DATE
+	     	,USER_SCHOOL
+	     	,USER_TYPE
+		 FROM W_USER
+		 WHERE USER_UID = #{uid}
+    </select>
+       	    
+    <select id="selectUserListBySearch" parameterType="UserSearch" resultMap="userResultMap">
+		SELECT 
+			USER_PID
+			,USER_UID
+			,PASSWORD
+        	,NICKNAME
+        	,USER_PHONE
+        	,BIRTH_DATE
+        	,USER_SCHOOL
+        	,USER_TYPE
+		FROM W_USER
+		WHERE 1 = 1
+			<if test="nickName != null and nickName != ''">
+				AND NICKNAME LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+		LIMIT #{offset}, #{limit}
+    </select>
+
+    	    
+    <select id="selectUserListTotalCount" parameterType="UserSearch" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM W_USER
+		WHERE 1 = 1
+			<if test="nickName != null and nickName != ''">
+				AND NICKNAME LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+    </select>    
+    
+</mapper>
